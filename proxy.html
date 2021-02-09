@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="application/javascript" >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script defer src="https://unpkg.com/browse/fast-levenshtein@2.0.6/levenshtein.js" type="text/javascript"></script>
+    <title>Document</title>
+</head>
+<body>
+
+
+    <script>
+
+
+
+        const target = {
+            red: 'rojo',
+            green: 'verde',
+            blue: 'azul'
+        }
+
+        const handler = {
+            get(obj, prop) {
+                if( prop in obj) {
+                    return obj.prop
+                }
+
+                const suggestion = Object.keys(obj).find(key => {
+                    return Levenshtein.get(key, prop) < 3
+                });
+
+                if ( suggestion ) {
+                    console.log(`${prop} no se econtro. Quisiste decir ${suggestion}?`);
+                }
+                return obj[prop];
+            },
+        }
+
+        const p = new Proxy(target, handler);
+    </script>
+</body>
+</html>
